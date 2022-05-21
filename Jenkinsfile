@@ -1,13 +1,19 @@
-node() {
-    def choice1
-    def choice2
-
-    stage ('Select'){
-        choice1 = input( id: 'userInput', message: 'Select your choice', parameters: [ [\$class: 'ChoiceParameterDefinition', choices: 'aa\nbb', description: '', name: ''] ])
-        if(choice1.equals("aa")){
-            choice2 = input( id: 'userInput', message: 'Select your choice', parameters: [ [\$class: 'ChoiceParameterDefinition', choices: 'yy\nww', description: '', name: ''] ])
-        }else{
-            choice2 = input( id: 'userInput', message: 'Select your choice', parameters: [ [\$class: 'ChoiceParameterDefinition', choices: 'gg\nkk', description: '', name: ''] ])
+pipeline {
+    agent any
+    stages {
+        stage('Setup parameters') {
+            steps {
+                script { 
+                    properties([
+                        parameters([
+                            choice(
+                                choices: ['ONE', 'TWO'], 
+                                name: 'PARAMETER_01'
+                            )
+                        ])
+                    ])
+                }
+            }
         }
-    }
+    }   
 }
