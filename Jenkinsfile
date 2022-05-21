@@ -1,17 +1,21 @@
+properties([parameters([[$class: 'WHideParameterDefinition', defaultValue: 'yoyo', name: 'hidden_var']])]) 
   pipeline {
-        parameters {
-            string(name: 'custom_var', defaultValue: '')
-        }
-    stages{
+        agent any
+
+stages{
         stage("make param global") {
              steps {
-               tmp_param =  sh (script: 'most amazing shell command', returnStdout: true).trim()
+                 script{
+               tmp_param =  "Hello"
                env.custom_var = tmp_param
+                 }
               }
         }
         stage("test if param was saved") {
             steps {
+              echo"About to check result"
               echo "${env.custom_var}"
             }
-        }     }
+        }
+    }
   }
