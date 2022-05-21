@@ -2,7 +2,7 @@
         parameters {
             string(name: 'custom_var', defaultValue: '')
         }
-
+    stages{
         stage("make param global") {
              steps {
                tmp_param =  sh (script: 'most amazing shell command', returnStdout: true).trim()
@@ -13,5 +13,5 @@
             steps {
               echo "${env.custom_var}"
             }
-        }
+        }     }
   }
