@@ -1,45 +1,17 @@
-pipeline {
+  pipeline {
+        parameters {
+            string(name: 'custom_var', defaultValue: '')
+        }
 
-    agent any
-
-    stages {
-
-        stage("Interactive_Input") {
+        stage("make param global") {
+             steps {
+               tmp_param =  sh (script: 'most amazing shell command', returnStdout: true).trim()
+               env.custom_var = tmp_param
+              }
+        }
+        stage("test if param was saved") {
             steps {
-                script {
-
-                    // Variables for input
-                    def inputConfig
-                    def inputTest
-
-                    // Get the input
-                    def userInput = input(
-                            id: 'userInput', message: 'Enter path of test reports:?',
-                            parameters: [
-
-                                    string(defaultValue: 'None',
-                                            description: 'Path of config file',
-                                            name: 'Config'),
-                                    string(defaultValue: 'None',
-                                            description: 'Test Info file',
-                                            name: 'Test'),
-                            ])
-
-                    // Save to variables. Default to empty string if not found.
-                    inputConfig = userInput.Config?:''
-                    inputTest = userInput.Test?:''
-
-                    // Echo to console
-                    echo("IQA Sheet Path: ${inputConfig}")
-                    echo("Test Info file path: ${inputTest}")
-
-                    // Write to file
-                    writeFile file: "inputData.txt", text: "Config=${inputConfig}\r\nTest=${inputTest}"
-
-                    // Archive the file (or whatever you want to do with it)
-                    archiveArtifacts 'inputData.txt'
-                }
+              echo "${env.custom_var}"
             }
         }
-    }
-}
+  }
