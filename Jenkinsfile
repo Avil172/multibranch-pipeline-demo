@@ -5,29 +5,7 @@ pipeline {
                 steps {
                     script {
                     properties([
-                            parameters([
-                                [$class: 'ChoiceParameter', 
-                                    choiceType: 'PT_SINGLE_SELECT', 
-                                    description: 'Select the Environemnt from the Dropdown List', 
-                                    filterLength: 1, 
-                                    filterable: false, 
-                                    name: 'Env', 
-                                    script: [
-                                        $class: 'GroovyScript', 
-                                        fallbackScript: [
-                                            classpath: [], 
-                                            sandbox: false, 
-                                            script: 
-                                                "return['Could not get The environemnts']"
-                                        ], 
-                                        script: [
-                                            classpath: [], 
-                                            sandbox: false, 
-                                            script: 
-                                                "return['dev','stage','prod']"
-                                        ]
-                                    ]
-                                ],
+                        parameters([choice(choices:['dev', 'stage', 'prod'], description: 'Select your environment', name: 'Env')]),
                                 [$class: 'CascadeChoiceParameter', 
                                     choiceType: 'PT_SINGLE_SELECT', 
                                     description: 'Select the AMI from the Dropdown List',
